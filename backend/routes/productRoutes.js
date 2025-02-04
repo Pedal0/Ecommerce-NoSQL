@@ -56,4 +56,10 @@ router.delete('/:id', authenticate, checkRole(['vendeur', 'admin']), async (req,
   }
 });
 
+router.post('/products', authenticate, checkRole(['vendeur', 'admin']), async (req, res) => {
+  // Création de produit - accessible uniquement aux vendeurs et admins
+});
+
+
+
 module.exports = router;

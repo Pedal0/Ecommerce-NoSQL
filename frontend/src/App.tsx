@@ -6,6 +6,7 @@ import ProductList from './components/ProductList.tsx';
 import CreateProduct from './components/CreateProduct.tsx';
 import CreateOrder from './components/CreateOrder.tsx';
 
+
 const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [view, setView] = useState<'register' | 'login' | 'products' | 'createProduct' | 'createOrder'>('login');

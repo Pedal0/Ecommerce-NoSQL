@@ -56,4 +56,8 @@ router.delete('/:id', authenticate, checkRole(['admin']), async (req, res) => {
   }
 });
 
+router.post('/orders', authenticate, checkRole(['client', 'admin']), async (req, res) => {
+  // Création de commande - accessible uniquement aux clients et admins
+});
+
 module.exports = router;
