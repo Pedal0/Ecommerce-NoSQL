@@ -4,7 +4,7 @@ btnClient.addEventListener("click", () => {
     method: "GET",
     headers: {
       Authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFkZmY0ZGQzNmM3MWYzZjU2ZGVjOSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mzg2NjE5MTgsImV4cCI6MTczODY2NTUxOH0.xa_rt_lOY-S7MewNi4-ro8fBi-2MvHi1b2GEOEaC72Y",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFkZmY0ZGQzNmM3MWYzZjU2ZGVjOSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mzg2NjYwODcsImV4cCI6MTczODY2OTY4N30.H7Cv2-58CkDT6zBfp6CBYPxHGztoi1MfirkwQJAEcpQ",
     },
   })
     .then((response) => response.json())
@@ -42,7 +42,7 @@ btnVendeur.addEventListener("click", () => {
     method: "GET",
     headers: {
       Authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFlMDQ2ZGQzNmM3MWYzZjU2ZGVkMCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczODY2MTk2NywiZXhwIjoxNzM4NjY1NTY3fQ.EzCskPdr-O6XCZX35kpidCARlnns8ggY8uNLeF-T91s",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
     },
   })
     .then((response) => response.json())
@@ -81,7 +81,7 @@ document.getElementById("products").addEventListener("click", (event) => {
       method: "DELETE",
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFlMDQ2ZGQzNmM3MWYzZjU2ZGVkMCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczODY2MTk2NywiZXhwIjoxNzM4NjY1NTY3fQ.EzCskPdr-O6XCZX35kpidCARlnns8ggY8uNLeF-T91s",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
       },
     })
       .then((response) => {
@@ -106,23 +106,23 @@ document.getElementById("products").addEventListener("click", (event) => {
       method: "GET",
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFlMDQ2ZGQzNmM3MWYzZjU2ZGVkMCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczODY2MTk2NywiZXhwIjoxNzM4NjY1NTY3fQ.EzCskPdr-O6XCZX35kpidCARlnns8ggY8uNLeF-T91s",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
       },
     })
       .then((response) => response.json())
       .then((product) => {
         // Remplacer le contenu de la div par un formulaire d'édition
         productContainer.innerHTML = `
-                    <form id="editProductForm">
-                        <label>Nom: <input type="text" id="edit_name" name="name" value="${product.name}"></label><br>
-                        <label>Description: <input type="text" id="edit_description" name="description" value="${product.description}"></label><br>
-                        <label>Prix: <input type="text" id="edit_price" name="price" value="${product.price}"></label><br>
-                        <label>Quantité: <input type="text" id="edit_quantity" name="quantity" value="${product.quantity}"></label><br>
-                        <label>Catégorie: <input type="text" id="edit_category" name="category" value="${product.category}"></label><br>
-                        <input type="hidden" id="edit_product_id" name="product_id" value="${product._id}">
-                        <button type="submit">Modifier</button>
-                    </form>
-                `;
+                      <form id="editProductForm">
+                          <label>Nom: <input type="text" id="edit_name" name="name" value="${product.name}"></label><br>
+                          <label>Description: <input type="text" id="edit_description" name="description" value="${product.description}"></label><br>
+                          <label>Prix: <input type="text" id="edit_price" name="price" value="${product.price}"></label><br>
+                          <label>Quantité: <input type="text" id="edit_quantity" name="quantity" value="${product.quantity}"></label><br>
+                          <label>Catégorie: <input type="text" id="edit_category" name="category" value="${product.category}"></label><br>
+                          <input type="hidden" id="edit_product_id" name="product_id" value="${product._id}">
+                          <button type="submit">Modifier</button>
+                      </form>
+                  `;
 
         // Gérer la soumission du formulaire pour mettre à jour le produit
         const form = productContainer.querySelector("#editProductForm");
@@ -141,7 +141,7 @@ document.getElementById("products").addEventListener("click", (event) => {
             headers: {
               "Content-Type": "application/json",
               Authorization:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFlMDQ2ZGQzNmM3MWYzZjU2ZGVkMCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczODY2MTk2NywiZXhwIjoxNzM4NjY1NTY3fQ.EzCskPdr-O6XCZX35kpidCARlnns8ggY8uNLeF-T91s",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
             },
             body: JSON.stringify(updatedProduct),
           })
@@ -162,4 +162,52 @@ document.getElementById("products").addEventListener("click", (event) => {
         console.error("Erreur lors de la récupération du produit:", error);
       });
   }
+});
+
+document.getElementById("btnAdd").addEventListener("click", () => {
+  const container = document.getElementById("products");
+  container.innerHTML = `
+        <div class="addProduct">
+            <form id="addProductForm">
+                <label>Nom: <input type="text" name="name" required></label><br>
+                <label>Description: <input type="text" name="description" required></label><br>
+                <label>Prix: <input type="number" name="price" required></label><br>
+                <label>Quantité: <input type="number" name="quantity" required></label><br>
+                <label>Catégorie: <input type="text" name="category" required></label><br>
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+    `;
+
+  document.getElementById("addProductForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const newProduct = {
+      name: e.target.name.value,
+      description: e.target.description.value,
+      price: e.target.price.value,
+      quantity: e.target.quantity.value,
+      category: e.target.category.value,
+    };
+
+    fetch("http://localhost:5000/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
+      },
+      body: JSON.stringify(newProduct),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert("Produit ajouté avec succès !");
+          location.reload();
+        } else {
+          alert("Erreur lors de l'ajout du produit.");
+        }
+      })
+      .catch((error) => {
+        console.error("Erreur:", error);
+      });
+  });
 });
