@@ -1,10 +1,63 @@
+// Stocker le token dans une variable globale
+let userToken = "";
+let userRole = "";
+
+// Gestion du formulaire de login
+const loginForm = document.getElementById("loginForm");
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  fetch("http://localhost:5000/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erreur lors de la connexion");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Sauvegarde du token et du role
+      userToken = data.token;
+      // Le token est généré avec les infos : { id: ..., role: ... }
+      // Vous pouvez parser le token ou le récupérer dans data (selon votre API)
+      // Ici on suppose que le role est disponible dans data.role
+      userRole = data.role;
+
+      // Masquer le formulaire de login
+      document.getElementById("loginSection").style.display = "none";
+      // Afficher la section des produits
+      document.getElementById("productsSection").style.display = "block";
+
+      // Mettre à jour les boutons selon le rôle
+      if (userRole === "client") {
+        // Affiche uniquement le bouton client et cache les autres
+        document.getElementById("btnClient").dataset.token = userToken;
+        document.getElementById("btnVendeur").style.display = "none";
+        document.getElementById("btnAdd").style.display = "none";
+      } else if (userRole === "vendeur" || userRole === "admin") {
+        // Affiche les boutons vendeur et add
+        document.getElementById("btnVendeur").dataset.token = userToken;
+        document.getElementById("btnAdd").dataset.token = userToken;
+        document.getElementById("btnClient").style.display = "none";
+      }
+    })
+    .catch((error) => {
+      alert(error.message);
+      console.error("Erreur:", error);
+    });
+});
+
 btnClient = document.getElementById("btnClient");
 btnClient.addEventListener("click", () => {
   fetch("http://localhost:5000/products", {
     method: "GET",
     headers: {
-      Authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFkZmY0ZGQzNmM3MWYzZjU2ZGVjOSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mzg2NjYwODcsImV4cCI6MTczODY2OTY4N30.H7Cv2-58CkDT6zBfp6CBYPxHGztoi1MfirkwQJAEcpQ",
+      Authorization: userToken,
     },
   })
     .then((response) => response.json())
@@ -41,8 +94,7 @@ btnVendeur.addEventListener("click", () => {
   fetch("http://localhost:5000/products", {
     method: "GET",
     headers: {
-      Authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
+      Authorization: userToken,
     },
   })
     .then((response) => response.json())
@@ -80,8 +132,7 @@ document.getElementById("products").addEventListener("click", (event) => {
     fetch(`http://localhost:5000/products/${event.target.id}`, {
       method: "DELETE",
       headers: {
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
+        Authorization: userToken,
       },
     })
       .then((response) => {
@@ -105,8 +156,7 @@ document.getElementById("products").addEventListener("click", (event) => {
     fetch(`http://localhost:5000/products/${event.target.id}`, {
       method: "GET",
       headers: {
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
+        Authorization: userToken,
       },
     })
       .then((response) => response.json())
@@ -140,8 +190,7 @@ document.getElementById("products").addEventListener("click", (event) => {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
-              Authorization:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
+              Authorization: userToken,
             },
             body: JSON.stringify(updatedProduct),
           })
@@ -193,8 +242,7 @@ document.getElementById("btnAdd").addEventListener("click", () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTFmMDE4ZGQzNmM3MWYzZjU2ZGYwMiIsInJvbGUiOiJ2ZW5kZXVyIiwiaWF0IjoxNzM4NjY2MDI0LCJleHAiOjE3Mzg2Njk2MjR9.YXxuHTfaUKvxApHNJ-i3B4VyTAPZnPKsXBTrjHeS6uo",
+        Authorization: userToken,
       },
       body: JSON.stringify(newProduct),
     })
