@@ -1,5 +1,11 @@
-// frontend/src/components/CreateOrder.tsx
-import React, { useState, FormEvent } from 'react';
+// src/components/CreateOrder.tsx
+import React, { useState, useEffect, FormEvent } from 'react';
+
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+}
 
 interface CreateOrderProps {
   token: string;
@@ -22,26 +28,51 @@ interface OrderData {
 }
 
 const CreateOrder: React.FC<CreateOrderProps> = ({ token }) => {
-  const [productId, setProductId] = useState<string>('');
-  const [quantity, setQuantity] = useState<string>('');
-  const [price, setPrice] = useState<string>('');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedProductId, setSelectedProductId] = useState<string>('');
+  const [selectedProductPrice, setSelectedProductPrice] = useState<number>(0);
+  const [quantity, setQuantity] = useState<string>('1');
   const [paymentMethod, setPaymentMethod] = useState<string>('');
+
+  // Récupérer la liste des produits pour le dropdown
+  useEffect(() => {
+    fetch('http://localhost:5000/api/products', {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data);
+        if (data.length > 0) {
+          setSelectedProductId(data[0]._id);
+          setSelectedProductPrice(data[0].price);
+        }
+      })
+      .catch(err => console.error(err));
+  }, [token]);
+
+  const handleProductChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const prodId = e.target.value;
+    setSelectedProductId(prodId);
+    const prod = products.find(p => p._id === prodId);
+    if (prod) {
+      setSelectedProductPrice(prod.price);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const orderData: OrderData = {
       items: [
         {
-          product: productId,
+          product: selectedProductId,
           quantity: parseInt(quantity, 10),
-          price: parseFloat(price)
-        }
+          price: selectedProductPrice,
+        },
       ],
       paymentDetails: {
         method: paymentMethod,
-        status: 'en attente'
-      }
+        status: 'en attente',
+      },
     };
 
     try {
@@ -49,17 +80,14 @@ const CreateOrder: React.FC<CreateOrderProps> = ({ token }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(orderData)
+        body: JSON.stringify(orderData),
       });
       const data = await res.json();
       if (res.ok) {
         alert('Commande créée avec succès');
-        // Réinitialisation des champs
-        setProductId('');
-        setQuantity('');
-        setPrice('');
+        setQuantity('1');
         setPaymentMethod('');
       } else {
         alert(data.message || 'Erreur lors de la création de la commande');
@@ -71,39 +99,48 @@ const CreateOrder: React.FC<CreateOrderProps> = ({ token }) => {
   };
 
   return (
-    <div>
-      <h2>Passer une Commande</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="ID du produit"
-          value={productId}
-          onChange={(e) => setProductId(e.target.value)}
-          required
-        /><br />
-        <input
-          type="number"
-          placeholder="Quantité"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          required
-        /><br />
-        <input
-          type="number"
-          step="0.01"
-          placeholder="Prix unitaire"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        /><br />
-        <input
-          type="text"
-          placeholder="Méthode de paiement"
-          value={paymentMethod}
-          onChange={(e) => setPaymentMethod(e.target.value)}
-          required
-        /><br />
-        <button type="submit">Passer commande</button>
+    <div className="max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Passer une Commande</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <label className="block">
+          <span className="text-gray-700">Produit</span>
+          <select
+            value={selectedProductId}
+            onChange={handleProductChange}
+            className="mt-1 block w-full border border-gray-300 p-2 rounded"
+          >
+            {products.map((product) => (
+              <option key={product._id} value={product._id}>
+                {product.name} - {product.price} €
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block">
+          <span className="text-gray-700">Quantité</span>
+          <input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            className="mt-1 block w-full border border-gray-300 p-2 rounded"
+            required
+          />
+        </label>
+        <label className="block">
+          <span className="text-gray-700">Méthode de paiement</span>
+          <input
+            type="text"
+            placeholder="Ex : carte bancaire, PayPal"
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+            className="mt-1 block w-full border border-gray-300 p-2 rounded"
+            required
+          />
+        </label>
+        <button type="submit" className="w-full bg-purple-500 text-white p-2 rounded hover:bg-purple-600">
+          Passer commande
+        </button>
       </form>
     </div>
   );

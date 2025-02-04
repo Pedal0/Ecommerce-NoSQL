@@ -1,4 +1,4 @@
-// frontend/src/components/CreateProduct.tsx
+// src/components/CreateProduct.tsx
 import React, { useState, FormEvent } from 'react';
 
 interface CreateProductProps {
@@ -6,13 +6,13 @@ interface CreateProductProps {
 }
 
 const CreateProduct: React.FC<CreateProductProps> = ({ token }) => {
-  const [name, setName] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [price, setPrice] = useState<string>('');
-  const [quantity, setQuantity] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [category, setCategory] = useState('');
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const product = {
       name,
@@ -49,45 +49,52 @@ const CreateProduct: React.FC<CreateProductProps> = ({ token }) => {
   };
 
   return (
-    <div>
-      <h2>Créer un Produit</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Créer un Produit</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           placeholder="Nom du produit"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          className="w-full border border-gray-300 p-2 rounded"
           required
-        /><br />
+        />
         <textarea
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          className="w-full border border-gray-300 p-2 rounded"
           required
-        ></textarea><br />
+        ></textarea>
         <input
           type="number"
           step="0.01"
           placeholder="Prix"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
+          className="w-full border border-gray-300 p-2 rounded"
           required
-        /><br />
+        />
         <input
           type="number"
           placeholder="Quantité"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
+          className="w-full border border-gray-300 p-2 rounded"
           required
-        /><br />
+        />
         <input
           type="text"
           placeholder="Catégorie"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
+          className="w-full border border-gray-300 p-2 rounded"
           required
-        /><br />
-        <button type="submit">Créer</button>
+        />
+        <button type="submit" className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">
+          Créer le produit
+        </button>
       </form>
     </div>
   );
